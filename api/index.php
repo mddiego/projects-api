@@ -34,8 +34,7 @@ $app->group('/api', function ($group) {
 
     $group->get('/resume', function (Request $request, Response $response, array $args) {
 
-        var_dump(phpinfo());
-
+        // var_dump(phpinfo());
 
         $collection = Database::getInstance()->getCollection('experiences');
 
