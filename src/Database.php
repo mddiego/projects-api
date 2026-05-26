@@ -9,11 +9,11 @@ class Database
 
     private function __construct()
     {
-        $client = new Client($_ENV['MONGODB_URI'] ?? getenv('MONGODB_URI'));
+        $client = new Client(getenv('MONGODB_URI') ?? $_ENV['MONGODB_URI']);
         // For MongoDB Atlas:
         // $client = new Client("mongodb+srv://<user>:<pass>@cluster.mongodb.net");
 
-        $this->db = $client->selectDatabase($_ENV['DB'] ?? getenv('DB'));
+        $this->db = $client->selectDatabase(getenv('DB') ?? $_ENV['DB']);
     }
 
     public static function getInstance(): self
