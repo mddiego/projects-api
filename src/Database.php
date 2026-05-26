@@ -9,7 +9,7 @@ class Database
 
     private function __construct()
     {
-        var_dump(getenv());
+        //var_dump(getenv());
         $client = new Client(getenv('MONGODB_URI') ?: $_ENV['MONGODB_URI']);
         // For MongoDB Atlas:
         // $client = new Client("mongodb+srv://<user>:<pass>@cluster.mongodb.net");
