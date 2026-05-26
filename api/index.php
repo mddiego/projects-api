@@ -8,26 +8,37 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = AppFactory::create();
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
-
-$app->get('/hello/', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write("Hello World!");
-    return $response;
-});
-
 $app->get('/', function (Request $request, Response $response, array $args) {
     $response->getBody()->write("Index!");
     return $response;
 });
 
+$app->group('/api', function ($group) {
 
-$app->get('/**', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write("invalid!");
-    return $response;
+    $group->get('/resume', function (Request $request, Response $response, array $args) {
+        $response->getBody()->write("Resume!");
+        return $response;
+    });
+
+
+    $group->get('/hello/{name}', function (Request $request, Response $response, array $args) {
+        $name = $args['name'];
+        $response->getBody()->write("Hello, $name");
+        return $response;
+    });
+
+    $group->get('/hello/', function (Request $request, Response $response, array $args) {
+        $response->getBody()->write("Hello World!");
+        return $response;
+    });
+
+
+
+
+    $group->get('/**', function (Request $request, Response $response, array $args) {
+        $response->getBody()->write("invalid!");
+        return $response;
+    });
 });
 
 
