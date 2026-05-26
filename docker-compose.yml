@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - www:/var/www/html
+      # - type: bind
+      #   source: ./www
+      #   target: /var/www/html
+      #   consistency: cached
+      - logs:/var/log/httpd
+      # - type: bind
+      #   source: ./logs
+      #   target: /var/log/httpd
+      #   consistency: cached
+    environment:
+      - DOCKER_ENVIRONMENT=dev
+
+volumes:
+  www:
+    driver: local
+  logs:
+    driver: local
