@@ -29,12 +29,12 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
 $app->group('/api', function ($group) {
 
-
+    var_dump(phpinfo());
 
 
     $group->get('/resume', function (Request $request, Response $response, array $args) {
 
-
+        var_dump(phpinfo());
 
 
         $collection = Database::getInstance()->getCollection('experiences');
