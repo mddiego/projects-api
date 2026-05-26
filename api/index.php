@@ -2,21 +2,47 @@
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/Database.php';
+require __DIR__ . '/../src/Helper.php';
+
+loadEnv(__DIR__ . '/../.env', safe: true);
 
 $app = AppFactory::create();
 
+// $app->add(function (Request $request, RequestHandler $handler): Response {
+//     $response = $handler->handle($request);
+
+//     return $response->withHeader('Content-Type', 'application/json');
+// });
+
 $app->get('/', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write("Index!");
+
+    $response->getBody()->write("index");
     return $response;
 });
 
 $app->group('/api', function ($group) {
 
+
+
+
     $group->get('/resume', function (Request $request, Response $response, array $args) {
-        $response->getBody()->write("Resume!");
+
+
+
+
+        $collection = Database::getInstance()->getCollection('experiences');
+
+        $experiences = $collection->find([], ['sort' => ['_id' => 1], "projection" => ["_id" => 0]])->toArray();
+
+        //var_dump($experiences);
+
+        $response->getBody()->write(json_encode($experiences));
+
         return $response;
     });
 
@@ -27,7 +53,7 @@ $app->group('/api', function ($group) {
         return $response;
     });
 
-    $group->get('/hello/', function (Request $request, Response $response, array $args) {
+    $group->get('/hello', function (Request $request, Response $response, array $args) {
         $response->getBody()->write("Hello World!");
         return $response;
     });
@@ -39,13 +65,20 @@ $app->group('/api', function ($group) {
         $response->getBody()->write("invalid!");
         return $response;
     });
+})->add(function (Request $request, RequestHandler $handler): Response {
+    $response = $handler->handle($request);
+
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 
 try {
     $app->run();
 } catch (Exception $e) {
-    echo json_encode([
-        "error" => true
-    ]);
+    //var_dump(getenv());
+    // echo json_encode([
+    //     "error" => true,
+    //     "message" => $e->getMessage(),
+
+    // ]);
 }
