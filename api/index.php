@@ -21,6 +21,8 @@ $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response, array $args) {
 
+    var_dump(phpinfo());
+
     $response->getBody()->write("index");
     return $response;
 });
